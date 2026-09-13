@@ -1,6 +1,7 @@
 package com.orderflow;
 
 import com.orderflow.product.ProductNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
@@ -39,12 +41,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> runTimeExceptionHandler(RuntimeException runtimeException) {
+    public ResponseEntity<ErrorResponse> runtimeExceptionHandler(RuntimeException runtimeException) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         Map<String, String> errors = new HashMap<>();
         String error = "INTERNAL_SERVER_ERROR";
         String message = "An unexpected error occurred";
-        runtimeException.printStackTrace();
+        log.error(message, runtimeException);
         ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), error, message, LocalDateTime.now(), errors);
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
