@@ -1,6 +1,8 @@
 package com.orderflow.product;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +19,18 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts() {
+        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable UUID id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable UUID id) {
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public Product createProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
-        return productService.createProduct(createProductRequest.getSku(), createProductRequest.getName(), createProductRequest.getPrice());
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
+        return new ResponseEntity<>(productService.createProduct(createProductRequest.getSku(), createProductRequest.getName(), createProductRequest.getPrice()), HttpStatus.CREATED);
     }
 
 }

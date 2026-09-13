@@ -10,7 +10,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class ErrorResponse {
-    private HttpStatus status;
+    private int status;
     private String error;
     private String message;
     private LocalDateTime timestamp;
